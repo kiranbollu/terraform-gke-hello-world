@@ -1,0 +1,1 @@
+{"Modules":[{"Key":"","Source":"","Dir":"."},{"Key":"gke","Source":"./gke","Dir":"gke"},{"Key":"kubernetes_resources","Source":"./k8s","Dir":"k8s"},{"Key":"vpc","Source":"./vpc","Dir":"vpc"}]}

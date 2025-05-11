@@ -2,7 +2,6 @@ resource "kubernetes_storage_class" "standard" {
   metadata {
     name = "standard-rwo"
   }
-
   storage_provisioner = "kubernetes.io/gce-pd"
   parameters = {
     type = "pd-standard"
@@ -10,6 +9,7 @@ resource "kubernetes_storage_class" "standard" {
   reclaim_policy      = "Delete"
   volume_binding_mode = "WaitForFirstConsumer"
 }
+
 
 resource "kubernetes_stateful_set" "db" {
   metadata {
@@ -19,25 +19,25 @@ resource "kubernetes_stateful_set" "db" {
       app = "mongodb"
     }
   }
-}
+
   spec {
-    service_name = "mongodb-service"
-    replicas     = 1
-    pod_management_policy = "OrderedReady"
+    service_name           = "mongodb-service"
+    replicas               = 1
+    pod_management_policy  = "OrderedReady"
 
     selector {
       match_labels = {
         app = "mongodb"
       }
     }
-  }
+
     template {
       metadata {
         labels = {
           app = "mongodb"
         }
       }
-    }
+
       spec {
         container {
           name  = "mongodb"
@@ -47,19 +47,14 @@ resource "kubernetes_stateful_set" "db" {
             container_port = 27017
             name           = "mongodb"
           }
-        }
-          volume_mount {
-            name       = "data"
-            mount_path = "/data/db"
-          }
-      }
+
           resources {
             limits = {
-              cpu    = "0.5"
+              cpu    = "500m"
               memory = "512Mi"
             }
             requests = {
-              cpu    = "0.2"
+              cpu    = "200m"
               memory = "256Mi"
             }
           }
@@ -73,3 +68,29 @@ resource "kubernetes_stateful_set" "db" {
             period_seconds        = 10
             failure_threshold     = 3
           }
+
+          readiness_probe {
+            exec {
+              command = ["mongo", "--eval", "db.adminCommand('ping')"]
+            }
+            initial_delay_seconds = 10
+            timeout_seconds       = 3
+            period_seconds        = 10
+            failure_threshold     = 3
+          }
+
+          volume_mount {
+            name       = "data"
+            mount_path = "/data/db"
+          }
+        }
+
+        volume {
+          name = "data"
+
+
+        }
+      }
+    }
+  }
+}

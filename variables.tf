@@ -72,11 +72,11 @@ variable "subnet_cidr" {
 variable "pod_cidr" {
   description = "CIDR range for pods"
   type        = string
-  default     = "172.16.0.0/16"
+  default     = "10.1.0.0/16"
 }
 
 variable "service_cidr" {
   description = "CIDR range for services"
   type        = string
-  default     = "192.168.0.0/16"
+  default     = "10.2.0.0/20"
 }

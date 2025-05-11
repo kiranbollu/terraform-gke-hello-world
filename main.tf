@@ -45,7 +45,7 @@ module "kubernetes_resources" {
 
 # GitHub repository
 resource "github_repository" "hello_world" {
-  name        = "terraform-gke-hello-world"
+  name        = "terraform-gke-hello-world-v1"
   description = "Hello World application deployed on GKE using Terraform"
   visibility  = "public"
   auto_init   = true

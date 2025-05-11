@@ -16,6 +16,7 @@ terraform {
 }
 
 provider "google" {
+  credentials = file("/mnt/c/Users/kiran/Downloads/terraform-gke-hello-world/gcp_key.json")
   project = var.project_id
   region  = var.region
 }
@@ -28,6 +29,7 @@ provider "kubernetes" {
 
 provider "github" {
   token = var.github_token
+  owner = "kiranbollu"
 }
 
 data "google_client_config" "default" {}
